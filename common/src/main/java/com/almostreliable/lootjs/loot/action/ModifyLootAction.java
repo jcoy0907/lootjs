@@ -1,6 +1,8 @@
 package com.almostreliable.lootjs.loot.action;
 
 import com.almostreliable.lootjs.core.ILootAction;
+import com.almostreliable.lootjs.kube.LootContextJS;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 
@@ -20,7 +22,7 @@ public class ModifyLootAction implements ILootAction {
         for (int i = 0; i < loot.size(); i++) {
             if (predicate.test(loot.get(i))) {
                 ItemStack currentItemStack = loot.get(i);
-                loot.set(i, callback.modify(currentItemStack).copy());
+                loot.set(i, callback.modify(currentItemStack, new LootContextJS(context)).copy());
             }
         }
 
@@ -29,6 +31,6 @@ public class ModifyLootAction implements ILootAction {
 
     @FunctionalInterface
     public interface Callback {
-        ItemStack modify(ItemStack itemStack);
+        ItemStack modify(ItemStack itemStack, LootContextJS context);
     }
 }
